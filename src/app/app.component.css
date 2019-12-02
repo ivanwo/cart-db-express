@@ -1,20 +1,31 @@
 * {
   font-family: sans-serif;
 }
-.former {
+form {
   background-color: lightgray;
   left: 0;
   right: 0;
-  height: 50px;
+  box-shadow: 2px 2px solid black;
+}
+.former {
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: center;
   flex-wrap: wrap;
 }
 .former * {
   font-size: 15px;
   border-radius: 10px;
+  margin: 1px 1px;
 }
+.optionHolder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 350px;
+  max-width: 45vw;
+}
+
 label {
   margin-left: 10px;
 }
@@ -28,12 +39,18 @@ input[TYPE="number"] {
 }
 input[type="submit"] {
   background-color: white;
+  width: 100px;
+  padding-left: 0;
   cursor: pointer;
 }
 article {
   width: 500px;
-  background-color: lightgray;
+  max-width: 78vw;
+  background-color: #d3d3d3;
+  display: flex;
+  justify-content: space-between;
   border-radius: 10px;
+  padding: 10px 20px;
   margin: 5px;
 }
 h1,
@@ -41,21 +58,19 @@ h2,
 p {
   text-align: center;
 }
+h2 {
+  font-size: 1.25em;
+}
 button {
+  margin-top: 5px;
   margin-left: 100px;
   border: none;
   background-color: lightgray;
   cursor: pointer;
+  color: green;
   padding-bottom: 10px;
 }
-h2 {
-  border-bottom: 2px solid white;
-}
-h2 * {
-  margin-top: -10px;
-  padding: 0 5px;
-}
-section {
+.bodystuff {
   width: 600px;
   max-width: 100vw;
   margin: 0 auto;
@@ -66,8 +81,6 @@ section {
 @media screen and (min-width: 600px) {
   .former * {
     font-size: 20px;
-  }
-  button {
-    margin-left: 200px;
+    margin: 5px 5px;
   }
 }

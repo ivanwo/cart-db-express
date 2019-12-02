@@ -14,7 +14,7 @@ export class CartService {
   }
   delete(i: number): Observable<any> {
     console.log("delete " + i + " please");
-    return this.http.delete(`http://localhost:3001/cart-items/${i}`);
+    return this.http.delete(`http://localhost:3001/cart-items/${i}`); 
   }
   add(product, price, amount) {
     console.log("adding product");

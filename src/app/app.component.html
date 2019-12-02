@@ -1,22 +1,26 @@
-<form (submit)="add()" class="former">
-  <label for=""
-    >product<input type="text" name="product" [(ngModel)]="product"
-  /></label>
-  <label for=""
-    >amount<input type="number" name="amount" [(ngModel)]="amount"
-  /></label>
-  <label for=""
-    >price<input type="number" name="price" [(ngModel)]="price"
-  /></label>
-  <input type="submit" value="submit" />
+<form (submit)="add()">
+  <h1>⬢ your cart ⬢</h1>
+  <section class="former">
+    <label for=""
+      >product<input type="text" name="product" [(ngModel)]="product"
+    /></label>
+    <label for=""
+      >amount<input type="number" name="amount" [(ngModel)]="amount"
+    /></label>
+    <label for=""
+      >price<input type="number" name="price" [(ngModel)]="price"
+    /></label>
+    <input type="submit" value="add" />
+  </section>
 </form>
-<h1>cart</h1>
-<section>
+
+<section class="bodystuff">
   <article *ngFor="let item of cart">
     <h2>{{ item.product }}</h2>
-    <P>
-      <b>{{ item.quantity }}</b> at <b>${{ item.price }}</b> per
-    </P>
-    <button (click)="delete(item.id)">remove from cart</button>
+    <section class="optionHolder">
+      <button (click)="delete(item.id)">remove from cart</button>
+      <p>x{{ item.quantity }}</p>
+      <p>${{ item.price }}</p>
+    </section>
   </article>
 </section>

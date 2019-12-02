@@ -1,50 +1,61 @@
 const express = require("express");
+const pool = require("./connection");
 const cartRoutes = express.Router();
 
-const cart = [
-  { id: 0, product: "jelly", price: 1, quantity: 10 },
-  { id: 1, product: "jam", price: 1.5, quantity: 10 },
-  { id: 2, product: "marmalade", price: 2, quantity: 10 }
-];
-let nextId = 3;
-
 cartRoutes.get("/cart-items", (req, res) => {
-  res.status(200);
-  res.json(cart);
+  let sql = "SELECT * FROM shopping_cart";
+  pool.query(sql).then(result => {
+    res.status(200);
+    res.json(result.rows);
+  });
 });
+
 cartRoutes.get("/cart-items/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const item = cart.find(i => i.id === id);
-  if (item) {
-    res.status(200);
-    res.json(item);
-  } else {
-    res.status(404);
-    res.send("ID not found");
-  }
+  let sql = "SELECT * FROM shopping_cart WHERE id = $1::int";
+  params = [id];
+  pool.query(sql, params).then(result => {
+    if (result.rows.length !== 0) {
+      res.status(200);
+      res.json(result.rows[0]);
+    } else {
+      res.status(404);
+      res.json("ID not found");
+    }
+  });
 });
 cartRoutes.post("/cart-items", (req, res) => {
   const item = req.body;
-  item.id = nextId++;
-  cart.push(item);
-  res.status(201);
-  res.json(item);
+  let sql =
+    "INSERT INTO shopping_cart (product, price, quantity) VALUES ($1::TEXT, $2::FLOAT, $3::INT) RETURNING *";
+  let params = [item.product, item.price, item.quantity];
+  pool.query(sql, params).then(result => {
+    res.status(201);
+    res.json(result.rows[0]);
+  });
 });
 cartRoutes.put("/cart-items/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const item = req.body;
   item.id = id;
-  const index = cart.findIndex(i => i.id === id);
-  cart.splice(index, 1, item);
-  res.status(200);
-  res.json(item);
+  let sql = `UPDATE shopping_cart SET product=$1::TEXT, price=$2::FLOAT, quantity=$3::INT WHERE id =$4::INT RETURNING *`;
+  let params = [item.product, item.price, item.quantity, id];
+  pool.query(sql, params).then(result => {
+    res.status(200);
+    res.json(result.rows[0]);
+  });
 });
 cartRoutes.delete("/cart-items/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const index = cart.findIndex(i => i.id === id);
-  if (index !== -1) cart.splice(index, 1);
-  res.status(204);
-  res.json();
+  let sql = "DELETE FROM shopping_cart WHERE id=$1::int";
+  let params = [id];
+  pool.query(sql, params).then(result => {
+    res.sendStatus(204);
+  });
+  // const index = cart.findIndex(i => i.id === id);
+  // if (index !== -1) cart.splice(index, 1);
+  // res.status(204);
+  // res.json();
 });
 
 module.exports = cartRoutes;
